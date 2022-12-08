@@ -13,19 +13,17 @@ describe('IncomeTaxCalculator', () => {
     [1500, [1000, 500]],
     [2000, [1000, 500, 500]],
   ])
-    ('adiciona rendimentos', (expectedTotalIncome: number, incomeValues: number[]) => {
-      for (let i = 0; i < incomeValues.length; i++) {
-        sut.addIncome({ label: `label ${i}`, value: incomeValues[i] })
-      }
+    ('adiciona rendimentos %p = sum(%p)', (expectedTotalIncome: number, incomeValues: number[]) => {
+      incomeValues.forEach((value) => sut.addIncome({ label: 'label ', value }))
 
       expect(sut.totalIncome).toEqual(expectedTotalIncome)
     })
 
   describe('Exceptions', () => {
     it('BlankLabelException', () => {
-      expect(() => {
+      expect(() =>
         sut.addIncome({ label: '', value: 1000 })
-      }).toThrow(BlankLabelException)
+      ).toThrow(BlankLabelException)
     })
 
     it.each([
@@ -34,9 +32,9 @@ describe('IncomeTaxCalculator', () => {
       [0],
     ])
       ('InvalidIncomeValueException %p', (value: number) => {
-        expect(() => {
+        expect(() =>
           sut.addIncome({ label: 'Salário', value })
-        }).toThrow(InvalidIncomeValueException)
+        ).toThrow(InvalidIncomeValueException)
       })
   })
 })
