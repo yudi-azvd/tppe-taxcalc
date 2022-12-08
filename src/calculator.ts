@@ -18,4 +18,5 @@ class IncomeTaxCalculator {
 }
 
 
+export type { Income }
 export { IncomeTaxCalculator }

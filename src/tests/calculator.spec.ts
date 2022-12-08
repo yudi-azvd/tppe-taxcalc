@@ -7,24 +7,16 @@ describe('IncomeTaxCalculator', () => {
     sut = new IncomeTaxCalculator()
   })
 
-  it('adiciona 1 rendimento', () => {
-    sut.addIncome({ label: 'Salário', value: 1000 })
+  it.each([
+    [1000, [1000]],
+    [1500, [1000, 500]],
+    [2000, [1000, 500, 500]],
+  ])
+    ('adiciona rendimentos', (expectedTotalIncome: number, incomeValues: number[]) => {
+      for (let i = 0; i < incomeValues.length; i++) {
+        sut.addIncome({ label: `label ${i}`, value: incomeValues[i] })
+      }
 
-    expect(sut.totalIncome).toEqual(1000)
-  })
-
-  it('adiciona 2 rendimentos', () => {
-    sut.addIncome({ label: 'Salário', value: 1000 })
-    sut.addIncome({ label: 'Bolsa', value: 500 })
-
-    expect(sut.totalIncome).toEqual(1500)
-  })
-
-  it('adiciona 3 rendimentos', () => {
-    sut.addIncome({ label: 'Salário', value: 1000 })
-    sut.addIncome({ label: 'Bolsa', value: 500 })
-    sut.addIncome({ label: 'Pensão', value: 500 })
-
-    expect(sut.totalIncome).toEqual(2000)
-  })
+      expect(sut.totalIncome).toEqual(expectedTotalIncome)
+    })
 })
