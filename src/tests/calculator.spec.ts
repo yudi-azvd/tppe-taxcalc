@@ -28,18 +28,15 @@ describe('IncomeTaxCalculator', () => {
       }).toThrow(BlankLabelException)
     })
 
-    it('InvalidIncomeValueException', () => {
-      expect(() => {
-        sut.addIncome({ label: 'Salário', value: -1000 })
-      }).toThrow(InvalidIncomeValueException)
-
-      expect(() => {
-        sut.addIncome({ label: 'Salário', value: NaN })
-      }).toThrow(InvalidIncomeValueException)
-
-      expect(() => {
-        sut.addIncome({ label: 'Salário', value: 0 })
-      }).toThrow(InvalidIncomeValueException)
-    })
+    it.each([
+      [-100],
+      [NaN],
+      [0],
+    ])
+      ('InvalidIncomeValueException %p', (value: number) => {
+        expect(() => {
+          sut.addIncome({ label: 'Salário', value })
+        }).toThrow(InvalidIncomeValueException)
+      })
   })
 })
