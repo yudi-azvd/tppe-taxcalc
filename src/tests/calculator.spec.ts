@@ -1,4 +1,5 @@
 import { IncomeTaxCalculator } from '../calculator'
+import { BlankLabelException } from '../exceptions'
 
 let sut: IncomeTaxCalculator
 
@@ -19,4 +20,12 @@ describe('IncomeTaxCalculator', () => {
 
       expect(sut.totalIncome).toEqual(expectedTotalIncome)
     })
+
+  describe('Exceptions', () => {
+    it('BlankLabelException', () => {
+      expect(() => {
+        sut.addIncome({ label: '', value: 1000 })
+      }).toThrow(BlankLabelException)
+    })
+  })
 })
