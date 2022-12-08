@@ -22,7 +22,7 @@ describe('IncomeTaxCalculator', () => {
 
     sut.addIncome({ label: 'Salário', value: 1000 })
     sut.addIncome({ label: 'Bolsa', value: 500 })
-    sut.addIncome({ label: 'Bolsa', value: 500 })
+    sut.addIncome({ label: 'Pensão', value: 500 })
 
     expect(sut.totalIncome).toEqual(2000)
   })
