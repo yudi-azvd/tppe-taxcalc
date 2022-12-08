@@ -1,16 +1,19 @@
 import { IncomeTaxCalculator } from '../calculator'
 
+let sut: IncomeTaxCalculator
+
 describe('IncomeTaxCalculator', () => {
+  beforeEach(() => {
+    sut = new IncomeTaxCalculator()
+  })
+
   it('adiciona 1 rendimento', () => {
-    let sut = new IncomeTaxCalculator()
     sut.addIncome({ label: 'Salário', value: 1000 })
 
     expect(sut.totalIncome).toEqual(1000)
   })
 
   it('adiciona 2 rendimentos', () => {
-    let sut = new IncomeTaxCalculator()
-
     sut.addIncome({ label: 'Salário', value: 1000 })
     sut.addIncome({ label: 'Bolsa', value: 500 })
 
@@ -18,8 +21,6 @@ describe('IncomeTaxCalculator', () => {
   })
 
   it('adiciona 3 rendimentos', () => {
-    let sut = new IncomeTaxCalculator()
-
     sut.addIncome({ label: 'Salário', value: 1000 })
     sut.addIncome({ label: 'Bolsa', value: 500 })
     sut.addIncome({ label: 'Pensão', value: 500 })
