@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "test": "jest --runInBand",
+    "test": "jest --runInBand --coverage=false",
+    "cov": "jest --runInBand",
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview"
