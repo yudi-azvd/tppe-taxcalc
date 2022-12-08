@@ -1,0 +1,10 @@
+{
+    "jest.autoRun": "off",
+    "jest.showTerminalOnLaunch": false,
+    "debug.javascript.terminalOptions": {
+        "skipFiles": [
+            "<node_internals>/**"
+        ]
+    },
+    "editor.formatOnSave": true,
+}
