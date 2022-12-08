@@ -1,5 +1,5 @@
-class BlankLabelException extends Error {
+class BlankLabelException extends Error { }
 
-}
+class InvalidIncomeValueException extends Error { }
 
-export { BlankLabelException }
+export { BlankLabelException, InvalidIncomeValueException }

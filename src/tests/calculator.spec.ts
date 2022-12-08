@@ -1,5 +1,5 @@
 import { IncomeTaxCalculator } from '../calculator'
-import { BlankLabelException } from '../exceptions'
+import { BlankLabelException, InvalidIncomeValueException } from '../exceptions'
 
 let sut: IncomeTaxCalculator
 
@@ -26,6 +26,20 @@ describe('IncomeTaxCalculator', () => {
       expect(() => {
         sut.addIncome({ label: '', value: 1000 })
       }).toThrow(BlankLabelException)
+    })
+
+    it('InvalidIncomeValueException', () => {
+      expect(() => {
+        sut.addIncome({ label: 'Salário', value: -1000 })
+      }).toThrow(InvalidIncomeValueException)
+
+      expect(() => {
+        sut.addIncome({ label: 'Salário', value: NaN })
+      }).toThrow(InvalidIncomeValueException)
+
+      expect(() => {
+        sut.addIncome({ label: 'Salário', value: 0 })
+      }).toThrow(InvalidIncomeValueException)
     })
   })
 })
