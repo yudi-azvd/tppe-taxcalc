@@ -1,6 +1,14 @@
 class IncomeTaxCalculator {
-  addIncome({ label, value }: { label: string, value: number }) {
+  totalIncome: number = 0
+  incomes: { label: string, value: number }[] = []
 
+  addIncome(income: { label: string, value: number }) {
+    this.totalIncome += income.value
+    this.incomes.push(income)
+  }
+
+  getTotalIncome() {
+    return this.totalIncome
   }
 }
 
