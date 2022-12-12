@@ -19,6 +19,14 @@ describe('IncomeTaxCalculator', () => {
       expect(sut.totalIncome).toEqual(expectedTotalIncome)
     })
 
+  it.each([
+    [1000, [1000]]
+  ])('adiciona deduções %p = sum(%p)', (expectedTotalDeduction: number, deductions: number[]) => {
+    deductions.forEach(value => sut.addDeduction({ label: 'label', value: value }))
+
+    expect(sut.totalDeduction).toEqual(expectedTotalDeduction)
+  })
+
   describe('Exceptions', () => {
     it('BlankLabelException', () => {
       expect(() =>
