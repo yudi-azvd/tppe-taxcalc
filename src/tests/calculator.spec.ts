@@ -34,6 +34,14 @@ describe('IncomeTaxCalculator', () => {
     expect(sut.totalDeduction).toEqual(189.59)
   })
 
+  it('adding 2 dependent adds to deduction', () => {
+    sut.addDependent({ name: 'John Doe', birth: new Date('2000-01-01') })
+    sut.addDependent({ name: 'Mary Sue', birth: new Date('2000-01-02') })
+
+    expect(sut.dependents.length).toEqual(2)
+    expect(sut.totalDeduction).toEqual(2 * 189.59)
+  })
+
   describe('Exceptions', () => {
     it('BlankLabelException', () => {
       expect(() =>
