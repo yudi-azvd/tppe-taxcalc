@@ -1,4 +1,4 @@
-import { BlankLabelException, InvalidDeductionValueException, InvalidIncomeValueException, } from "./exceptions"
+import { BlankLabelException, BlankNameException, InvalidDeductionValueException, InvalidIncomeValueException, } from "./exceptions"
 
 interface Income {
   label: string
@@ -10,10 +10,16 @@ interface Deduction {
   value: number
 }
 
+interface Dependent {
+  name: string
+  birth: Date
+}
+
 class IncomeTaxCalculator {
   totalIncome = 0
   incomes: Income[] = []
   deductions: Deduction[] = []
+  dependents: Dependent[] = []
   totalDeduction = 0
 
   addIncome(income: Income) {
@@ -36,6 +42,14 @@ class IncomeTaxCalculator {
 
     this.deductions.push({ label, value })
     this.totalDeduction += value
+  }
+
+  addDependent({ name, birth }: Dependent) {
+    if (name.length === 0)
+      throw new BlankNameException()
+
+    this.dependents.push({ name, birth })
+    this.totalDeduction += 189.59
   }
 
   getTotalIncome() {
