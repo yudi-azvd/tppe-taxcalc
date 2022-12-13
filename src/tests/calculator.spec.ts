@@ -2,6 +2,7 @@ import { IncomeTaxCalculator } from '../calculator'
 import { BlankLabelException, InvalidIncomeValueException } from '../exceptions'
 
 let sut: IncomeTaxCalculator
+const REAIS_PER_DEPENDENT = IncomeTaxCalculator.REAIS_PER_DEPENDENT
 
 describe('IncomeTaxCalculator', () => {
   beforeEach(() => {
@@ -31,7 +32,7 @@ describe('IncomeTaxCalculator', () => {
     sut.addDependent({ name: 'John Doe', birth: new Date('2000-01-01') })
 
     expect(sut.dependents.length).toEqual(1)
-    expect(sut.totalDeduction).toEqual(189.59)
+    expect(sut.totalDeduction).toEqual(REAIS_PER_DEPENDENT)
   })
 
   it('adding 2 dependent adds to deduction', () => {
@@ -39,7 +40,7 @@ describe('IncomeTaxCalculator', () => {
     sut.addDependent({ name: 'Mary Sue', birth: new Date('2000-01-02') })
 
     expect(sut.dependents.length).toEqual(2)
-    expect(sut.totalDeduction).toEqual(2 * 189.59)
+    expect(sut.totalDeduction).toEqual(2 * REAIS_PER_DEPENDENT)
   })
 
   describe('Exceptions', () => {

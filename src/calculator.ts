@@ -16,6 +16,7 @@ interface Dependent {
 }
 
 class IncomeTaxCalculator {
+  static REAIS_PER_DEPENDENT = 189.59
   totalIncome = 0
   incomes: Income[] = []
   deductions: Deduction[] = []
@@ -49,7 +50,7 @@ class IncomeTaxCalculator {
       throw new BlankNameException()
 
     this.dependents.push({ name, birth })
-    this.totalDeduction += 189.59
+    this.totalDeduction += IncomeTaxCalculator.REAIS_PER_DEPENDENT
   }
 
   getTotalIncome() {
