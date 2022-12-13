@@ -1,4 +1,4 @@
-import { IncomeTaxCalculator } from '../calculator'
+import { Dependent, IncomeTaxCalculator } from '../calculator'
 import { BlankLabelException, InvalidIncomeValueException } from '../exceptions'
 
 let sut: IncomeTaxCalculator
@@ -28,20 +28,23 @@ describe('IncomeTaxCalculator', () => {
     expect(sut.totalDeduction).toEqual(expectedTotalDeduction)
   })
 
-  it('adding dependent adds to deduction', () => {
-    sut.addDependent({ name: 'John Doe', birth: new Date('2000-01-01') })
+  it.each([
+    [1 * REAIS_PER_DEPENDENT, [
+      { name: 'John Doe', birth: new Date('2000-01-01') }]],
+    [2 * REAIS_PER_DEPENDENT, [
+      { name: 'John Doe', birth: new Date('2000-01-01') },
+      { name: 'Mary Sue', birth: new Date('2000-01-02') }]],
+    [3 * REAIS_PER_DEPENDENT, [
+      { name: 'John Doe', birth: new Date('2000-01-01') },
+      { name: 'John Foe', birth: new Date('2000-01-10') },
+      { name: 'Mary Sue', birth: new Date('2000-01-02') }]],
+  ])
+    ('adding dependents adds to deduction', (dependentsCost: number, dependents: Dependent[]) => {
+      dependents.forEach(d => sut.addDependent(d))
 
-    expect(sut.dependents.length).toEqual(1)
-    expect(sut.totalDeduction).toEqual(REAIS_PER_DEPENDENT)
-  })
-
-  it('adding 2 dependent adds to deduction', () => {
-    sut.addDependent({ name: 'John Doe', birth: new Date('2000-01-01') })
-    sut.addDependent({ name: 'Mary Sue', birth: new Date('2000-01-02') })
-
-    expect(sut.dependents.length).toEqual(2)
-    expect(sut.totalDeduction).toEqual(2 * REAIS_PER_DEPENDENT)
-  })
+      expect(sut.dependents.length).toEqual(dependents.length)
+      expect(sut.totalDeduction).toBeCloseTo(dependentsCost)
+    })
 
   describe('Exceptions', () => {
     it('BlankLabelException', () => {

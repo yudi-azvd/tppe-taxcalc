@@ -59,5 +59,5 @@ class IncomeTaxCalculator {
 }
 
 
-export type { Income, Deduction }
+export type { Income, Deduction, Dependent }
 export { IncomeTaxCalculator }
