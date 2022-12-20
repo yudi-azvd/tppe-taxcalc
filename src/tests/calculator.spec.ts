@@ -1,4 +1,4 @@
-import { Dependent, IncomeTaxCalculator } from '../calculator'
+import { Deduction, Dependent, Income, IncomeTaxCalculator } from '../calculator'
 import { BlankLabelException, InvalidIncomeValueException } from '../exceptions'
 
 let sut: IncomeTaxCalculator
@@ -47,17 +47,16 @@ describe('IncomeTaxCalculator', () => {
     })
 
 
-  it('basis = total income - total deduction', () => {
-    sut.addIncome({ label: 'Label 1', value: 1000 })
-    sut.addIncome({ label: 'Label 2', value: 1000 })
-    sut.addDeduction({ label: 'Label 2', value: 1000 })
-    expect(sut.getBasis()).toBeCloseTo(1000)
+  it.each([
+    [1000, [1000, 1000], [1000]],
+    [2500, [3000], [500]],
+  ])
+    ('basis = total income - total deduction', (expectedBasis: number, incomes: number[], deductions: number[]) => {
+      incomes.forEach((value) => sut.addIncome({ label: 'label', value }))
+      deductions.forEach((value) => sut.addDeduction({ label: 'label', value }))
 
-    sut = new IncomeTaxCalculator()
-    sut.addIncome({ label: 'Label 1', value: 3000 })
-    sut.addDeduction({ label: 'Label 2', value: 500 })
-    expect(sut.getBasis()).toBeCloseTo(2500)
-  })
+      expect(sut.getBasis()).toBeCloseTo(expectedBasis)
+    })
 
   describe('Exceptions', () => {
     it('BlankLabelException', () => {
