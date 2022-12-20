@@ -52,8 +52,9 @@ describe('IncomeTaxCalculator', () => {
     [2500, [3000], [500]],
   ])
     ('basis = total income - total deduction', (expectedBasis: number, incomes: number[], deductions: number[]) => {
-      incomes.forEach((value) => sut.addIncome({ label: 'label', value }))
-      deductions.forEach((value) => sut.addDeduction({ label: 'label', value }))
+      const label = 'label'
+      incomes.forEach((value) => sut.addIncome({ label, value }))
+      deductions.forEach((value) => sut.addDeduction({ label, value }))
 
       expect(sut.getBasis()).toBeCloseTo(expectedBasis)
     })
