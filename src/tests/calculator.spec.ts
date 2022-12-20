@@ -46,6 +46,14 @@ describe('IncomeTaxCalculator', () => {
       expect(sut.totalDeduction).toBeCloseTo(dependentsCost)
     })
 
+
+  it('basis = total income - total deduction', () => {
+    sut.totalDeduction = 1000
+    sut.totalIncome = 2000
+
+    expect(sut.getBasis()).toBeCloseTo(1000)
+  })
+
   describe('Exceptions', () => {
     it('BlankLabelException', () => {
       expect(() =>

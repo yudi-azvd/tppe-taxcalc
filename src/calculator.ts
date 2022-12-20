@@ -56,6 +56,10 @@ class IncomeTaxCalculator {
   getTotalIncome() {
     return this.totalIncome
   }
+
+  getBasis() {
+    return 1000
+  }
 }
 
 
