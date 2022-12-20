@@ -50,8 +50,11 @@ describe('IncomeTaxCalculator', () => {
   it('basis = total income - total deduction', () => {
     sut.totalDeduction = 1000
     sut.totalIncome = 2000
-
     expect(sut.getBasis()).toBeCloseTo(1000)
+
+    sut.totalDeduction = 500
+    sut.totalIncome = 3000
+    expect(sut.getBasis()).toBeCloseTo(2500)
   })
 
   describe('Exceptions', () => {

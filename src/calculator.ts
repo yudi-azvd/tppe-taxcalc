@@ -58,7 +58,7 @@ class IncomeTaxCalculator {
   }
 
   getBasis() {
-    return 1000
+    return this.totalIncome - this.totalDeduction
   }
 }
 
