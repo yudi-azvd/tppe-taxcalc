@@ -48,12 +48,14 @@ describe('IncomeTaxCalculator', () => {
 
 
   it('basis = total income - total deduction', () => {
-    sut.totalDeduction = 1000
-    sut.totalIncome = 2000
+    sut.addIncome({ label: 'Label 1', value: 1000 })
+    sut.addIncome({ label: 'Label 2', value: 1000 })
+    sut.addDeduction({ label: 'Label 2', value: 1000 })
     expect(sut.getBasis()).toBeCloseTo(1000)
 
-    sut.totalDeduction = 500
-    sut.totalIncome = 3000
+    sut = new IncomeTaxCalculator()
+    sut.addIncome({ label: 'Label 1', value: 3000 })
+    sut.addDeduction({ label: 'Label 2', value: 500 })
     expect(sut.getBasis()).toBeCloseTo(2500)
   })
 
