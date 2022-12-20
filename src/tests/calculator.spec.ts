@@ -1,4 +1,4 @@
-import { Deduction, Dependent, Income, IncomeTaxCalculator } from '../calculator'
+import { Dependent, IncomeTaxCalculator } from '../calculator'
 import { BlankLabelException, InvalidIncomeValueException } from '../exceptions'
 
 let sut: IncomeTaxCalculator
@@ -58,6 +58,18 @@ describe('IncomeTaxCalculator', () => {
 
       expect(sut.getBasis()).toBeCloseTo(expectedBasis)
     })
+
+  it('get effective rate', () => {
+    const label = 'label'
+    const incomes = [3_000]
+    const deductions = [1_000, 1_000]
+
+    incomes.forEach(value => sut.addIncome({ label, value }))
+    deductions.forEach(value => sut.addDeduction({ label, value }))
+
+    // 0.0 foi obtido na calculadora da Receita Federal
+    expect(sut.getEffectiveRate()).toEqual(0.00)
+  })
 
   describe('Exceptions', () => {
     it('BlankLabelException', () => {

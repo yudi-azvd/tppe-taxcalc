@@ -60,6 +60,10 @@ class IncomeTaxCalculator {
   getBasis() {
     return this.totalIncome - this.totalDeduction
   }
+
+  getEffectiveRate() {
+    return 0.00
+  }
 }
 
 
