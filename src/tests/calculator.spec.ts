@@ -3,6 +3,7 @@ import { BlankLabelException, InvalidIncomeValueException } from '../exceptions'
 
 let sut: IncomeTaxCalculator
 const REAIS_PER_DEPENDENT = IncomeTaxCalculator.REAIS_PER_DEPENDENT
+const label = 'label'
 
 describe('IncomeTaxCalculator', () => {
   beforeEach(() => {
@@ -59,41 +60,17 @@ describe('IncomeTaxCalculator', () => {
       expect(sut.getBasis()).toBeCloseTo(expectedBasis)
     })
 
-  it('get effective rate', () => {
-    const label = 'label'
-    const incomes = [3_000]
-    const deductions = [1_000, 1_000]
+  it.each([
+    [0.00, 3_000, 2_000],
+    [0.18, 4_000, 2_000],
+    [1.90, 5_000, 2_000],
+  ])
+    ('effective rate = %p, income = %p, deduction = %p', (effectiveRate: number, totalIncome: number, totalDeduction: number) => {
+      sut.addIncome({ label, value: totalIncome })
+      sut.addDeduction({ label, value: totalDeduction })
 
-    incomes.forEach(value => sut.addIncome({ label, value }))
-    deductions.forEach(value => sut.addDeduction({ label, value }))
-
-    // 0.0 foi obtido na calculadora da Receita Federal
-    expect(sut.getEffectiveRate()).toBeCloseTo(0.00, 1)
-  })
-
-  it('get effective rate 2', () => {
-    const label = 'label'
-    const incomes = [4_000]
-    const deductions = [1_000, 1_000]
-
-    incomes.forEach(value => sut.addIncome({ label, value }))
-    deductions.forEach(value => sut.addDeduction({ label, value }))
-
-    // 0.18 foi obtido na calculadora da Receita Federal
-    expect(sut.getEffectiveRate()).toBeCloseTo(0.18, 1)
-  })
-
-  it('get effective rate 3', () => {
-    const label = 'label'
-    const incomes = [5_000]
-    const deductions = [1_000, 1_000]
-
-    incomes.forEach(value => sut.addIncome({ label, value }))
-    deductions.forEach(value => sut.addDeduction({ label, value }))
-
-    // 0.18 foi obtido na calculadora da Receita Federal
-    expect(sut.getEffectiveRate()).toBeCloseTo(1.90, 1)
-  })
+      expect(sut.getEffectiveRate()).toBeCloseTo(effectiveRate, 1)
+    })
 
   describe('Exceptions', () => {
     it('BlankLabelException', () => {
