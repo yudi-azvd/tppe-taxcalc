@@ -65,19 +65,23 @@ class IncomeTaxCalculator {
 
   getEffectiveRate() {
     let effectiveRate = 0.
-    let basis = this.getBasis()
-    let tax = 0
+    let restInBand = this.getBasis()
+    let i, tax = 0
 
-    if (basis <= this.bands[0])
+    if (restInBand <= this.bands[0])
       return 0
 
-    basis -= this.bands[0]
-    tax += this.bands[0] * this.rates[0]
+    for (i = 0; i < this.bands.length - 1; i++) {
+      restInBand -= this.bands[i]
+      tax += this.bands[i] * this.rates[i]
 
-    basis -= this.bands[1]
-    tax += this.bands[1] * this.rates[1]
+      if (restInBand - this.bands[i + 1] <= 0) {
+        i++
+        break
+      }
+    }
 
-    tax += basis * this.rates[2]
+    tax += restInBand * this.rates[i]
 
     effectiveRate = tax / this.totalIncome * 100
     return effectiveRate
