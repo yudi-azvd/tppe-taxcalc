@@ -83,6 +83,18 @@ describe('IncomeTaxCalculator', () => {
     expect(sut.getEffectiveRate()).toBeCloseTo(0.18, 1)
   })
 
+  it('get effective rate 3', () => {
+    const label = 'label'
+    const incomes = [5_000]
+    const deductions = [1_000, 1_000]
+
+    incomes.forEach(value => sut.addIncome({ label, value }))
+    deductions.forEach(value => sut.addDeduction({ label, value }))
+
+    // 0.18 foi obtido na calculadora da Receita Federal
+    expect(sut.getEffectiveRate()).toBeCloseTo(1.90, 1)
+  })
+
   describe('Exceptions', () => {
     it('BlankLabelException', () => {
       expect(() =>

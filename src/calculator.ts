@@ -74,7 +74,10 @@ class IncomeTaxCalculator {
     basis -= this.bands[0]
     tax += this.bands[0] * this.rates[0]
 
-    tax += basis * this.rates[1]
+    basis -= this.bands[1]
+    tax += this.bands[1] * this.rates[1]
+
+    tax += basis * this.rates[2]
 
     effectiveRate = tax / this.totalIncome * 100
     return effectiveRate
