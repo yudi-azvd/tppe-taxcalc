@@ -1,6 +1,8 @@
 import { Dependent, IncomeTaxCalculator } from '../calculator'
 import { BlankLabelException, InvalidIncomeValueException } from '../exceptions'
 
+import { describe, beforeEach, it, expect } from 'vitest'
+
 let sut: IncomeTaxCalculator
 const REAIS_PER_DEPENDENT = IncomeTaxCalculator.REAIS_PER_DEPENDENT
 const label = 'label'
