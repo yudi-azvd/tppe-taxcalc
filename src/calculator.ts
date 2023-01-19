@@ -68,6 +68,12 @@ class IncomeTaxCalculator {
     if (restInBand <= this.bands[0])
       return 0
 
+    let tax = this.calculateTax(restInBand)
+    let effectiveRate = tax / this.totalIncome * 100
+    return effectiveRate
+  }
+
+  private calculateTax(restInBand: number) {
     let i, tax = 0
     for (i = 0; i < this.bands.length - 1; i++) {
       restInBand -= this.bands[i]
@@ -80,9 +86,7 @@ class IncomeTaxCalculator {
     }
 
     tax += restInBand * this.rates[i]
-
-    let effectiveRate = tax / this.totalIncome * 100
-    return effectiveRate
+    return tax
   }
 }
 
