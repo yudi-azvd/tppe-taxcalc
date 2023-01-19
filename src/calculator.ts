@@ -65,38 +65,59 @@ class IncomeTaxCalculator {
   }
 
   getEffectiveRate() {
-    let restInBand = this.getBasis()
-    if (restInBand <= this.FIRST_BAND)
+    const basis = this.getBasis()
+    if (basis <= this.FIRST_BAND)
       return 0
 
-    const taxCalculator = new TaxCalculator(this.rates, this.bands)
-    let tax = taxCalculator.calculate(restInBand)
-    let effectiveRate = tax / this.totalIncome * 100
+    const calculator = new TaxesPerBandsCalculator(this.rates, this.bands)
+    const taxes = calculator.run(basis)
+    const totalTax = taxes.reduce((acc, next) => acc + next, 0)
+    const effectiveRate = totalTax / this.totalIncome * 100
     return effectiveRate
+  }
+
+  run() {
+    const basis = this.getBasis()
+
+    const calculator = new TaxesPerBandsCalculator(this.rates, this.bands)
+    const taxes = calculator.run(basis)
+    const totalTax = taxes.reduce((acc, next) => acc + next, 0)
+    const effectiveRate = totalTax / this.totalIncome * 100
+    return {
+      effectiveRate,
+      taxes,
+      totalTax
+    }
   }
 }
 
 
-class TaxCalculator {
+class TaxesPerBandsCalculator {
   constructor(
     private readonly rates: number[],
     private readonly bands: number[],
   ) { }
 
-  calculate(restInBand: number) {
-    let i, tax = 0
+  run(basis: number) {
+    let i, restInBand = basis, taxInBand = 0
+    const taxes = Array<number>(5).fill(0)
+
+    if (basis <= this.bands[0])
+      return taxes
+
     for (i = 0; i < this.bands.length - 1; i++) {
       restInBand -= this.bands[i]
-      tax += this.bands[i] * this.rates[i]
-
+      taxInBand = this.bands[i] * this.rates[i]
+      taxes[i] = taxInBand
       if (restInBand - this.bands[i + 1] <= 0) {
         i++
         break
       }
     }
 
-    tax += restInBand * this.rates[i]
-    return tax
+    taxInBand = restInBand * this.rates[i]
+    taxes[i] = taxInBand
+    return taxes
   }
 }
 
