@@ -22,8 +22,9 @@ class IncomeTaxCalculator {
   deductions: Deduction[] = []
   dependents: Dependent[] = []
   totalDeduction = 0
-  private bands = [1903.98, 922.67, 924.40, 913.63, 0]
-  private rates = [0.0, 0.075, .15, .225, .275]
+  private readonly bands = [1903.98, 922.67, 924.40, 913.63, 0]
+  private readonly rates = [0.0, 0.075, .15, .225, .275]
+  private readonly FIRST_BAND = this.bands[0]
 
   addIncome(income: Income) {
     if (income.label.length === 0)
@@ -65,7 +66,7 @@ class IncomeTaxCalculator {
 
   getEffectiveRate() {
     let restInBand = this.getBasis()
-    if (restInBand <= this.bands[0])
+    if (restInBand <= this.FIRST_BAND)
       return 0
 
     const taxCalculator = new TaxCalculator(this.rates, this.bands)
