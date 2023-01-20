@@ -63,21 +63,6 @@ describe('IncomeTaxCalculator', () => {
     })
 
   it.each([
-    [0.00, 3_000, 2_000],
-    [0.18, 4_000, 2_000],
-    [1.90, 5_000, 2_000],
-    [3.09, 5_500, 2_000],
-    [4.39, 6_000, 2_000],
-    [16.13, 12_490, 2_000],
-  ])
-    ('effective rate = %p, income = %p, deduction = %p', (effectiveRate: number, totalIncome: number, totalDeduction: number) => {
-      sut.addIncome({ label, value: totalIncome })
-      sut.addDeduction({ label, value: totalDeduction })
-
-      expect(sut.getEffectiveRate()).toBeCloseTo(effectiveRate, 1)
-    })
-
-  it.each([
     [0.00, 3_000, 2_000, [0, 0.00, 0.00, 0, 0]],
     [0.18, 4_000, 2_000, [0, 7.20, 0.00, 0, 0]],
     [1.90, 5_000, 2_000, [0, 69.20, 26.00, 0, 0]],
