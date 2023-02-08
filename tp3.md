@@ -53,11 +53,20 @@ previu que um dia poderiam ser utilizadas e o acrescentou preventivamente
 sobre seu comportamento
 
 ## Ausência de duplicidades
-**Descrição:**
+**Descrição:** acontece quando as rotinas comuns, mais essenciais para o problema
+foram devidamente abstraídas em classes e métodos que podem ser facilmente 
+reutilizados em um ou mais módulos. Em uma base de código sem duplicação é mais
+fácil mudar rotinas que localmente que terão o efeito refletido em muitas outras
+partes do sistema.
 
 **Relação com maus cheiros**
+- Classes longas
+- Métodos longos
 
 **Operações de refatoração**
+- Extrair método
+- Extrair classe
+- Extrair variável
 
 ## Portabilidade 
 
@@ -89,8 +98,26 @@ construir aplicações desktop para vários SOs.
 
 ## Modularidade
 
-**Descrição:**
+**Descrição:** é a caractrística de um sistema que consiste na divisão da 
+solução em partes menores, chamadas módulos, em que cada um resolve uma parte do 
+problema independentemente das outras. Assim cada módulo tem apenas uma responsabilidade e é mais simples que o problema 
+original.
+
+A qualidade da modularidade se baseia no 
+grau de coesão dos módulos e nível de acomplamento entre os eles:
+
+- O grau de coesão se baseia no tanto que se relacionam as partes internas de um 
+módulo, é quão bem elas funcionam juntas.
+- Nível de acomplamento se refere ao nível de dependência de detalhes de 
+implementação ou do funcionamento interno de outros módulo.
 
 **Relação com maus cheiros**
+- Cadeia de mensagens: chamadas sucessivas de métodos de diferentes objetos. 
+Objeto A chama B, que chama C, que chama D etc.
+- Intimidade inapropriada: um módulo pode ter acesso a métodos e atributos
+muito obscuros de outro módulo que deveriam ser privadas.
 
 **Operações de refatoração**
+- Extrair método que contém as chamadas sucessivas.
+- Ocultar delegação para não permitir que o cliente de uma classe
+conheça o método que executa a delegação de uma tarefa.
