@@ -24,7 +24,6 @@ class IncomeTaxCalculator {
   totalDeduction = 0
   private readonly bands = [1903.98, 922.67, 924.40, 913.63, 0]
   private readonly rates = [0.0, 0.075, .15, .225, .275]
-  private readonly FIRST_BAND = this.bands[0]
 
   addIncome(income: Income) {
     if (income.label.length === 0)
@@ -64,23 +63,9 @@ class IncomeTaxCalculator {
     return this.totalIncome - this.totalDeduction
   }
 
-  getEffectiveRate() {
-    const basis = this.getBasis()
-    if (basis <= this.FIRST_BAND)
-      return 0
-
-    const calculator = new TaxesPerBandsCalculator(this.rates, this.bands)
-    const taxes = calculator.run(basis)
-    const totalTax = taxes.reduce((acc, next) => acc + next, 0)
-    const effectiveRate = totalTax / this.totalIncome * 100
-    return effectiveRate
-  }
-
   run() {
     const basis = this.getBasis()
-
-    const calculator = new TaxesPerBandsCalculator(this.rates, this.bands)
-    const taxes = calculator.run(basis)
+    const taxes = this.calculateTaxesPerBands(basis)
     const totalTax = taxes.reduce((acc, next) => acc + next, 0)
     const effectiveRate = totalTax / this.totalIncome * 100
     return {
@@ -89,37 +74,31 @@ class IncomeTaxCalculator {
       totalTax
     }
   }
-}
 
-
-class TaxesPerBandsCalculator {
-  constructor(
-    private readonly rates: number[],
-    private readonly bands: number[],
-  ) { }
-
-  run(basis: number) {
+  private calculateTaxesPerBands(basis: number) {
     let i, restInBand = basis, taxInBand = 0
     const taxes = Array<number>(5).fill(0)
 
     if (basis <= this.bands[0])
       return taxes
 
-    for (i = 0; i < this.bands.length - 1; i++) {
-      restInBand -= this.bands[i]
-      taxInBand = this.bands[i] * this.rates[i]
-      taxes[i] = taxInBand
-      if (restInBand - this.bands[i + 1] <= 0) {
-        i++
-        break
+    calculate(restInBand: number) {
+      let i, tax = 0
+      for (i = 0; i < this.bands.length - 1; i++) {
+        restInBand -= this.bands[i]
+        taxInBand = this.bands[i] * this.rates[i]
+        taxes[i] = taxInBand
+        if (restInBand - this.bands[i + 1] <= 0) {
+          i++
+          break
+        }
       }
-    }
 
-    taxInBand = restInBand * this.rates[i]
-    taxes[i] = taxInBand
-    return taxes
+      taxInBand = restInBand * this.rates[i]
+      taxes[i] = taxInBand
+      return taxes
+    }
   }
-}
 
 
 export type { Income, Deduction, Dependent }

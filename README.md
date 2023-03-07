@@ -3,7 +3,7 @@
 Projeto para a disciplina de Técnicas de Programação em Plataformas
 Emergentes da Universidade de Brasília.
 
-O enunciado do trabalho está em [enunciado.md](./enunciado.md).
+O enunciado do trabalho está em [docs/enunciado.md](./docs/enunciado.md).
 
 O código fonte está em [calculator.ts](src/calculator.ts).
 
@@ -13,7 +13,8 @@ Os testes estão em [calculator.spec.ts](src/tests/calculator.spec.ts).
 Alíquota efetiva é calculada em `getEffectiveRate()`.
 
 Esse projeto foi desenvolvido seguindo o 
-[Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/). Para procurar os commits de interesse, use
+[Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/). Para 
+procurar os commits de interesse, use
 
     git log --oneline | grep falsi
 
