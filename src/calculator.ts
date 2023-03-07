@@ -82,23 +82,21 @@ class IncomeTaxCalculator {
     if (basis <= this.bands[0])
       return taxes
 
-    calculate(restInBand: number) {
-      let i, tax = 0
-      for (i = 0; i < this.bands.length - 1; i++) {
-        restInBand -= this.bands[i]
-        taxInBand = this.bands[i] * this.rates[i]
-        taxes[i] = taxInBand
-        if (restInBand - this.bands[i + 1] <= 0) {
-          i++
-          break
-        }
-      }
-
-      taxInBand = restInBand * this.rates[i]
+    for (i = 0; i < this.bands.length - 1; i++) {
+      restInBand -= this.bands[i]
+      taxInBand = this.bands[i] * this.rates[i]
       taxes[i] = taxInBand
-      return taxes
+      if (restInBand - this.bands[i + 1] <= 0) {
+        i++
+        break
+      }
     }
+
+    taxInBand = restInBand * this.rates[i]
+    taxes[i] = taxInBand
+    return taxes
   }
+}
 
 
 export type { Income, Deduction, Dependent }
